@@ -9,12 +9,26 @@ using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// CORS
+
+const string corsPolicyName = "AllowAll";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicyName,
+        b => b
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    );
+});
+
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task Tracker", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo {Title = "Task Tracker", Version = "v1"});
 
     c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
@@ -63,6 +77,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(corsPolicyName);
 
 app.UseMiddleware<ErrorHandlerMiddlerware>();
 app.UseSerilogRequestLogging();
