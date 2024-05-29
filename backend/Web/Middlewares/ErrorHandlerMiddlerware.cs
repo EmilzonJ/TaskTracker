@@ -23,6 +23,14 @@ public class ErrorHandlerMiddlerware(RequestDelegate next, ILogger<ErrorHandlerM
         ExceptionResponse response = new();
         switch (exception)
         {
+            case UnprocessableEntityException unprocessableEntityException:
+                logger.LogInformation(exception, "----------------------UNPROCESSABLE ENTITY ERROR TYPE---------------------");
+                response.Errors = unprocessableEntityException.Errors;
+                response.StatusCode = (int) HttpStatusCode.UnprocessableEntity;
+                response.Title = "UnprocessableEntity";
+                context.Response.StatusCode = (int) HttpStatusCode.UnprocessableEntity;
+                break;
+
             case UnauthorizedException unauthorizedException:
                 logger.LogInformation(exception, "----------------------UNAUHORIZED ERROR TYPE---------------------");
                 response.Errors = unauthorizedException.Errors;
