@@ -16,6 +16,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
     public async Task<List<TaskEntity>> GetTasksAsync(Guid id)
         => await context.Tasks
+            .Include(t => t.User)
             .Include(t => t.Priority)
             .Where(t => t.UserId == id)
             .ToListAsync();

@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Features.Priorities.Queries.GetAll;
 using Application.Features.Users.Queries.GetAll;
 using Domain.Repositories;
@@ -11,6 +12,11 @@ public record GetUserTasksQueryHandler(
 {
     public async Task<List<TaskResponse>> Handle(GetUserTasksQuery request, CancellationToken cancellationToken)
     {
+
+        var user = await UserRepository.GetByIdAsync(request.UserId);
+
+        if(user is null) throw new NotFoundException("Usuario no encontrado");
+
         var tasks = await UserRepository.GetTasksAsync(request.UserId);
 
         return tasks.Select(t => new TaskResponse(
