@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Application.Features.Users.Queries;
+namespace Application.Features.Users.Queries.GetAll;
 
 public class GetAllUsersQuery : IRequest<List<UserResponse>>;
 

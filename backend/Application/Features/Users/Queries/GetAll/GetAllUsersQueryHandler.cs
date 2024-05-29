@@ -1,7 +1,7 @@
 using Domain.Repositories;
 using MediatR;
 
-namespace Application.Features.Users.Queries;
+namespace Application.Features.Users.Queries.GetAll;
 
 public record GetAllUsersQueryHandler(
     IUserRepository UserRepository
