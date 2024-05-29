@@ -1,3 +1,4 @@
+using Application.Features.Priorities.Queries.GetAll;
 using Application.Features.Users.Queries.GetAll;
 using Domain.Repositories;
 using MediatR;
@@ -20,7 +21,7 @@ public record GetUserTasksQueryHandler(
             t.ExpirationDate,
             t.Finished,
             new UserResponse(t.User.Id, t.User.Name, t.User.Surname, t.User.Email, t.User.Phone),
-            t.Priority.Name,
+            new PriorityResponse(t.Priority.Id, t.Priority.Name),
             t.CreatedAt
         )).ToList();
     }

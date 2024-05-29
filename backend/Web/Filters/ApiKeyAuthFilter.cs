@@ -10,14 +10,14 @@ public class ApiKeyAuthFilter(
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var clientApiKey = context.HttpContext.Request.Headers[Constants.ApiKey.ApiKeyHeader];
+        var clientApiKey = context.HttpContext.Request.Headers[Constants.ApiKey.ApiKeyHeader].ToString();
 
         if (string.IsNullOrWhiteSpace(clientApiKey))
         {
             throw new BadRequestException("API Key is missing");
         }
 
-        if (!apiKeyValidation.IsValidApiKey(clientApiKey!))
+        if (!apiKeyValidation.IsValidApiKey(clientApiKey))
         {
             throw new UnauthorizedException("Invalid API Key");
         }

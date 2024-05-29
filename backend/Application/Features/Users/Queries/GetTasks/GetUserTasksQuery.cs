@@ -1,3 +1,4 @@
+using Application.Features.Priorities.Queries.GetAll;
 using Application.Features.Users.Queries.GetAll;
 using MediatR;
 
@@ -13,6 +14,6 @@ public record TaskResponse(
     DateTime ExpirationDate,
     bool Finished,
     UserResponse User,
-    string Priority,
+    PriorityResponse Priority,
     DateTime CreatedAt
 );

@@ -2,7 +2,7 @@ using Domain.Base;
 using Domain.Entities;
 using Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
-using Task = Domain.Entities.Task;
+using TaskEntity = Domain.Entities.Task;
 
 namespace Infrastructure;
 
@@ -39,12 +39,14 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.SeedPriorities();
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<TaskEntity>().HasQueryFilter(t => !t.IsDeleted);
 
         base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskEntity> Tasks { get; set; }
     public DbSet<Priority> Priorities { get; set; }
 }
