@@ -1,20 +1,25 @@
 using Application;
 using Infrastructure;
 using Serilog;
+using Web.ApiKey;
+using Web.Filters;
 using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.Configure<RouteOptions>(options =>
     {
         options.LowercaseUrls = true;
         options.LowercaseQueryStrings = true;
     }
 );
+
+builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
+builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 builder.Services
     .AddApplicationServices()
@@ -35,4 +40,5 @@ app.UseMiddleware<ErrorHandlerMiddlerware>();
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
+app.MapControllers();
 app.Run();

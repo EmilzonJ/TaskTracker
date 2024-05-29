@@ -47,6 +47,14 @@ public class ErrorHandlerMiddlerware(RequestDelegate next, ILogger<ErrorHandlerM
                 context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 break;
 
+            case BadRequestException badRequestException:
+                logger.LogError(exception, "----------------------BAD REQUEST ERROR TYPE---------------------");
+                response.Errors = badRequestException.Errors;
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.Title = "Bad Request";
+                context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                break;
+
             case not null:
                 logger.LogError(exception, "----------------------SERVER ERROR TYPE---------------------");
                 response.Errors = new[] {"Ha ocurrido un error en el servidor"};
